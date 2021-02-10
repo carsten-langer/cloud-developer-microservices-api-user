@@ -8,6 +8,7 @@ import * as jwt from 'jsonwebtoken';
 import {NextFunction} from 'connect';
 
 import * as EmailValidator from 'email-validator';
+const {v4: uuidv4} = require('uuid')
 
 const router: Router = Router();
 
@@ -54,6 +55,9 @@ router.get('/verification',
 router.post('/login', async (req: Request, res: Response) => {
   const email = req.body.email;
   const password = req.body.password;
+
+  let pid = uuidv4()
+  console.log(new Date().toLocaleString() + `: ${pid} - User ${email} requested to login.`)
 
   if (!email || !EmailValidator.validate(email)) {
     return res.status(400).send({auth: false, message: 'Email is required or malformed.'});
